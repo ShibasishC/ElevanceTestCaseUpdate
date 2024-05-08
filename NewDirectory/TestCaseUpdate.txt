@@ -3,41 +3,41 @@
 import pytest  # used for our unit tests
 
 # function to test
-def maximum(a, b):
-    if a >= b:
-        return a
+def factorial(x):
+    if x == 1:
+        return 1
     else:
-        return b
+        return (x * factorial(x-1))
 
 # unit tests
 # below, each test case is represented by a tuple passed to the @pytest.mark.parametrize decorator
-@pytest.mark.parametrize("a, b, expected", [
-    # Scenario 1: Both inputs are positive numbers
-    (5, 10, 10),
-    (100, 50, 100),
-    (20, 20, 20),
 
-    # Scenario 2: Both inputs are negative numbers
-    (-5, -10, -5),
-    (-100, -50, -50),
-    (-20, -20, -20),
+# Test the function's behavior for positive integers
+@pytest.mark.parametrize("test_input, expected_output", [(5, 120), (3, 6)])
+def test_factorial_positive_integers(test_input, expected_output):
+    assert factorial(test_input) == expected_output
 
-    # Scenario 3: One input is positive and the other is negative
-    (5, -10, 5),
-    (-100, 50, 50),
+# Test edge case: Small numbers
+@pytest.mark.parametrize("test_input, expected_output", [(1, 1), (0, 1)])
+def test_factorial_small_numbers(test_input, expected_output):
+    assert factorial(test_input) == expected_output
 
-    # Scenario 4: One or both inputs are zero
-    (0, 10, 10),
-    (-10, 0, 0),
-    (0, 0, 0),
+# Test edge case: Large numbers
+# Note: The factorial of 100 is a very large number, so it's not included here. 
+# This is just an example of how you might structure such a test.
+@pytest.mark.parametrize("test_input", [100])
+def test_factorial_large_numbers(test_input):
+    assert isinstance(factorial(test_input), int)
 
-    # Scenario 5: Inputs are floating point numbers
-    (5.5, 10.5, 10.5),
-    (-100.5, 50.5, 50.5),
-    (0.0, 0.0, 0.0),
-])
-def test_maximum(a, b, expected):
-    # The function maximum should return the expected result for each test case
-    assert maximum(a, b) == expected
+# Test the function's behavior for negative numbers
+@pytest.mark.parametrize("test_input", [-5, -10])
+def test_factorial_negative_numbers(test_input):
+    with pytest.raises(ValueError):
+        factorial(test_input)
+
+# Test the function's behavior for non-integer values
+@pytest.mark.parametrize("test_input", [2.5, 'a'])
+def test_factorial_non_integer_values(test_input):
+    with pytest.raises(TypeError):
+        factorial(test_input)
 ```
-In this code, the `@pytest.mark.parametrize` decorator is used to run the `test_maximum` function multiple times with different arguments. Each tuple in the list passed to `@pytest.mark.parametrize` represents a different test case, with `a` and `b` as the inputs to the `maximum` function and `expected` as the expected result. The `assert` statement checks that the function returns the expected result for each test case.
