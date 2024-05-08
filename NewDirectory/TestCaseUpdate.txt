@@ -3,38 +3,41 @@
 import pytest  # used for our unit tests
 
 # function to test
-def factorial(x):
-    if x == 1:
-        return 1
+def maximum(a, b):
+    if a >= b:
+        return a
     else:
-        return (x * factorial(x-1))
+        return b
 
 # unit tests
 # below, each test case is represented by a tuple passed to the @pytest.mark.parametrize decorator
+@pytest.mark.parametrize("a, b, expected", [
+    # Scenario 1: Both inputs are positive numbers
+    (5, 10, 10),
+    (100, 50, 100),
+    (20, 20, 20),
 
-@pytest.mark.parametrize("test_input,expected_output", [
-    (1, 1),  # factorial of 1 is 1
-    (5, 120),  # factorial of 5 is 120
-    (10, 3628800),  # factorial of 10 is 3628800
-    (0, 1),  # factorial of 0 is 1
+    # Scenario 2: Both inputs are negative numbers
+    (-5, -10, -5),
+    (-100, -50, -50),
+    (-20, -20, -20),
+
+    # Scenario 3: One input is positive and the other is negative
+    (5, -10, 5),
+    (-100, 50, 50),
+
+    # Scenario 4: One or both inputs are zero
+    (0, 10, 10),
+    (-10, 0, 0),
+    (0, 0, 0),
+
+    # Scenario 5: Inputs are floating point numbers
+    (5.5, 10.5, 10.5),
+    (-100.5, 50.5, 50.5),
+    (0.0, 0.0, 0.0),
 ])
-def test_factorial(test_input, expected_output):
-    assert factorial(test_input) == expected_output
-
-def test_factorial_negative():
-    # factorial is not defined for negative numbers, so we expect a RecursionError
-    with pytest.raises(RecursionError):
-        factorial(-5)
-
-def test_factorial_non_integer():
-    # factorial is not defined for non-integers, so we expect a TypeError
-    with pytest.raises(TypeError):
-        factorial(5.5)
-    with pytest.raises(TypeError):
-        factorial("5")
-
-def test_factorial_large_input():
-    # factorial of 100 is a very large number, but it should still return the correct result
-    assert factorial(100) == 93326215443944152681699238856266700490715968264381621468592963895217599993229915608941463976156518286253697920827223758251185210916864000000000000000000000000
+def test_maximum(a, b, expected):
+    # The function maximum should return the expected result for each test case
+    assert maximum(a, b) == expected
 ```
-This suite of tests covers the cases outlined in the previous discussion. It uses the `pytest.mark.parametrize` decorator to test multiple inputs and expected outputs for the `factorial` function. It also includes tests for negative numbers, non-integers, and large inputs, which are expected to raise errors or return specific results.
+In this code, the `@pytest.mark.parametrize` decorator is used to run the `test_maximum` function multiple times with different arguments. Each tuple in the list passed to `@pytest.mark.parametrize` represents a different test case, with `a` and `b` as the inputs to the `maximum` function and `expected` as the expected result. The `assert` statement checks that the function returns the expected result for each test case.
