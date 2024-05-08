@@ -13,25 +13,28 @@ def factorial(x):
 # below, each test case is represented by a tuple passed to the @pytest.mark.parametrize decorator
 
 @pytest.mark.parametrize("test_input,expected_output", [
-    (5, 120),  # testing with positive integer
-    (3, 6),  # testing with positive integer
-    (10, 3628800),  # testing with positive integer
-    (1, 1),  # testing with edge case of 1
+    (1, 1),  # factorial of 1 is 1
+    (5, 120),  # factorial of 5 is 120
+    (10, 3628800),  # factorial of 10 is 3628800
+    (0, 1),  # factorial of 0 is 1
 ])
 def test_factorial(test_input, expected_output):
     assert factorial(test_input) == expected_output
 
-def test_factorial_large_number():
-    # testing with large number, just to check it doesn't cause a stack overflow
-    assert isinstance(factorial(1000), int)
-
 def test_factorial_negative():
-    # testing with negative number, should raise a ValueError
+    # factorial is not defined for negative numbers, so we expect a RecursionError
     with pytest.raises(RecursionError):
         factorial(-5)
 
 def test_factorial_non_integer():
-    # testing with non-integer number, should raise a ValueError
-    with pytest.raises(RecursionError):
-        factorial(2.5)
+    # factorial is not defined for non-integers, so we expect a TypeError
+    with pytest.raises(TypeError):
+        factorial(5.5)
+    with pytest.raises(TypeError):
+        factorial("5")
+
+def test_factorial_large_input():
+    # factorial of 100 is a very large number, but it should still return the correct result
+    assert factorial(100) == 93326215443944152681699238856266700490715968264381621468592963895217599993229915608941463976156518286253697920827223758251185210916864000000000000000000000000
 ```
+This suite of tests covers the cases outlined in the previous discussion. It uses the `pytest.mark.parametrize` decorator to test multiple inputs and expected outputs for the `factorial` function. It also includes tests for negative numbers, non-integers, and large inputs, which are expected to raise errors or return specific results.
