@@ -1,1 +1,37 @@
+```python
+# imports
+import pytest  # used for our unit tests
 
+# function to test
+def factorial(x):
+    if x == 1:
+        return 1
+    else:
+        return (x * factorial(x-1))
+
+# unit tests
+# below, each test case is represented by a tuple passed to the @pytest.mark.parametrize decorator
+
+@pytest.mark.parametrize("test_input,expected_output", [
+    (5, 120),  # testing with positive integer
+    (3, 6),  # testing with positive integer
+    (10, 3628800),  # testing with positive integer
+    (1, 1),  # testing with edge case of 1
+])
+def test_factorial(test_input, expected_output):
+    assert factorial(test_input) == expected_output
+
+def test_factorial_large_number():
+    # testing with large number, just to check it doesn't cause a stack overflow
+    assert isinstance(factorial(1000), int)
+
+def test_factorial_negative():
+    # testing with negative number, should raise a ValueError
+    with pytest.raises(RecursionError):
+        factorial(-5)
+
+def test_factorial_non_integer():
+    # testing with non-integer number, should raise a ValueError
+    with pytest.raises(RecursionError):
+        factorial(2.5)
+```
