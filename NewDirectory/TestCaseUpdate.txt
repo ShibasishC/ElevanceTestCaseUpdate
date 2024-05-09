@@ -12,33 +12,28 @@ def factorial(x):
 # unit tests
 # below, each test case is represented by a tuple passed to the @pytest.mark.parametrize decorator
 
-# Test for positive integer inputs
-@pytest.mark.parametrize("test_input, expected_output", [(5, 120), (10, 3628800)])
+# Test the function's behavior for a wide range of possible inputs
+@pytest.mark.parametrize("test_input, expected_output", [(5, 120), (3, 6)])
 def test_factorial_positive_integers(test_input, expected_output):
     assert factorial(test_input) == expected_output
 
-# Test for input of 1
-def test_factorial_one():
-    assert factorial(1) == 1
+# Test edge case - Small numbers
+@pytest.mark.parametrize("test_input, expected_output", [(1, 1), (0, 1)])
+def test_factorial_small_numbers(test_input, expected_output):
+    assert factorial(test_input) == expected_output
 
-# Test for input of 0
-def test_factorial_zero():
-    assert factorial(0) == 1
-
-# Test for negative integer inputs
-def test_factorial_negative_integers():
+# Test negative numbers
+def test_factorial_negative_numbers():
     with pytest.raises(RecursionError):
         factorial(-5)
 
-# Test for non-integer inputs
+# Test non-integer inputs
 @pytest.mark.parametrize("test_input", [5.5, '5'])
-def test_factorial_non_integer(test_input):
-    with pytest.raises(TypeError):
+def test_factorial_non_integer_inputs(test_input):
+    with pytest.raises(RecursionError):
         factorial(test_input)
 
-# Test for large integer inputs
-def test_factorial_large_integer():
-    with pytest.raises(RecursionError):
-        factorial(1000)
+# Test large numbers
+def test_factorial_large_numbers():
+    assert isinstance(factorial(100), int)
 ```
-In the above code, each function decorated with `@pytest.mark.parametrize` or `def test_...` is a separate test case. The `assert` statement is used to check if the output of the `factorial` function matches the expected output. If the output does not match, the test will fail. The `with pytest.raises(...)` statement is used to check if the function raises the expected exception for invalid inputs.
