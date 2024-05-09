@@ -12,29 +12,33 @@ def factorial(x):
 # unit tests
 # below, each test case is represented by a tuple passed to the @pytest.mark.parametrize decorator
 
-# Test the function's behavior for positive integers
+# Test the function's behavior for a wide range of possible inputs
 @pytest.mark.parametrize("test_input, expected_output", [(5, 120), (10, 3628800)])
 def test_factorial_positive_integers(test_input, expected_output):
     assert factorial(test_input) == expected_output
 
-# Test the function's behavior for small numbers (edge case)
-@pytest.mark.parametrize("test_input, expected_output", [(1, 1), (0, 1)])
-def test_factorial_small_numbers(test_input, expected_output):
-    assert factorial(test_input) == expected_output
+# Test edge case where input is 1
+def test_factorial_one():
+    assert factorial(1) == 1
 
-# Test the function's behavior for large numbers (edge case)
-def test_factorial_large_numbers():
-    # This test might take a while to run, but it's important to ensure our function can handle large inputs
-    assert factorial(1000) is not None
+# Test edge case where input is 0
+def test_factorial_zero():
+    assert factorial(0) == 1
 
-# Test the function's behavior for negative numbers
-def test_factorial_negative_numbers():
+# Test the function's behavior for negative inputs
+def test_factorial_negative():
     with pytest.raises(RecursionError):
         factorial(-5)
 
 # Test the function's behavior for non-integer inputs
-@pytest.mark.parametrize("test_input", [5.5, 'a'])
-def test_factorial_non_integer_inputs(test_input):
+def test_factorial_non_integer():
     with pytest.raises(TypeError):
-        factorial(test_input)
+        factorial(5.5)
+    with pytest.raises(TypeError):
+        factorial('a')
+
+# Test the function's behavior for large inputs
+def test_factorial_large_input():
+    assert factorial(100) == 93326215443944152681699238856266700490715968264381621468592963895217599993229915608941463976156518286253697920827223758251185210916864000000000000000000000000
 ```
+This suite of unit tests covers a wide range of possible inputs and edge cases for the `factorial` function. Each test asserts that the function behaves as expected under different conditions. If any of these assertions fail, it means there is a bug in the function that needs to be fixed.
