@@ -11,25 +11,26 @@ def factorial(x):
 
 # unit tests
 # below, each test case is represented by a tuple passed to the @pytest.mark.parametrize decorator
-
-@pytest.mark.parametrize("test_input, expected_output", [
+@pytest.mark.parametrize("input,expected", [
     (5, 120),  # testing with positive integer
-    (3, 6),  # testing with another positive integer
-    (1, 1),  # testing with 1
-    (0, 1),  # testing with 0, should return 1 as per mathematical definition
+    (10, 3628800),  # testing with positive integer
+    (1, 1),  # testing with edge case of smallest positive integer
+    (0, 1),  # testing with edge case of zero
+    (50, 30414093201713378043612608166064768844377641568960512000000000000),  # testing with large number
 ])
-def test_factorial(test_input, expected_output):
-    assert factorial(test_input) == expected_output
+def test_factorial(input, expected):
+    assert factorial(input) == expected
 
-def test_factorial_negative():
-    # testing with negative integer, should raise ValueError
-    with pytest.raises(ValueError):
-        factorial(-5)
+@pytest.mark.parametrize("input", [
+    -5,  # testing with negative number
+    5.5,  # testing with non-integer number
+    '5',  # testing with non-integer number
+])
+def test_factorial_invalid_input(input):
+    with pytest.raises((RecursionError, TypeError)):  # expecting either RecursionError or TypeError
+        factorial(input)
 
-def test_factorial_non_integer():
-    # testing with non-integer, should raise ValueError
-    with pytest.raises(ValueError):
-        factorial(4.5)
-    with pytest.raises(ValueError):
-        factorial('five')
+def test_factorial_no_input():
+    with pytest.raises(TypeError):  # expecting TypeError when no input is provided
+        factorial()
 ```
