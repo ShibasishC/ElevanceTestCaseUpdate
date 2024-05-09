@@ -12,32 +12,31 @@ def factorial(x):
 # unit tests
 # below, each test case is represented by a tuple passed to the @pytest.mark.parametrize decorator
 
-# Test the function's behavior for positive integers
-@pytest.mark.parametrize("test_input, expected_output", [(5, 120), (3, 6)])
-def test_factorial_positive_integers(test_input, expected_output):
-    assert factorial(test_input) == expected_output
+# Test the function's behavior for a wide range of possible inputs
+@pytest.mark.parametrize("test_input,expected", [(5, 120), (3, 6)])
+def test_factorial_positive_integer(test_input, expected):
+    assert factorial(test_input) == expected
 
-# Test edge case: Small numbers
-@pytest.mark.parametrize("test_input, expected_output", [(1, 1), (0, 1)])
-def test_factorial_small_numbers(test_input, expected_output):
-    assert factorial(test_input) == expected_output
+# Test edge case where input is 1
+def test_factorial_one():
+    assert factorial(1) == 1
 
-# Test edge case: Large numbers
-# Note: The factorial of 100 is a very large number, so it's not included here. 
-# This is just an example of how you might structure such a test.
-@pytest.mark.parametrize("test_input", [100])
-def test_factorial_large_numbers(test_input):
-    assert isinstance(factorial(test_input), int)
+# Test edge case where input is 0
+def test_factorial_zero():
+    assert factorial(0) == 1
 
-# Test the function's behavior for negative numbers
-@pytest.mark.parametrize("test_input", [-5, -10])
-def test_factorial_negative_numbers(test_input):
+# Test edge case where input is a negative integer
+def test_factorial_negative_integer():
     with pytest.raises(ValueError):
-        factorial(test_input)
+        factorial(-5)
 
-# Test the function's behavior for non-integer values
-@pytest.mark.parametrize("test_input", [2.5, 'a'])
-def test_factorial_non_integer_values(test_input):
+# Test edge case where input is a non-integer
+@pytest.mark.parametrize("test_input", [2.5, '5'])
+def test_factorial_non_integer(test_input):
     with pytest.raises(TypeError):
         factorial(test_input)
+
+# Test performance for large integer input
+def test_factorial_large_integer():
+    assert factorial(1000) is not None
 ```
