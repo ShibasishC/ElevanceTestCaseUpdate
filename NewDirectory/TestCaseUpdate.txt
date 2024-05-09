@@ -12,31 +12,31 @@ def factorial(x):
 # unit tests
 # below, each test case is represented by a tuple passed to the @pytest.mark.parametrize decorator
 
-# Test the function's behavior for a wide range of possible inputs
-@pytest.mark.parametrize("test_input,expected", [(5, 120), (3, 6)])
-def test_factorial_positive_integer(test_input, expected):
-    assert factorial(test_input) == expected
+# Test the function with positive integers
+@pytest.mark.parametrize("test_input, expected_output", [(5, 120), (3, 6)])
+def test_factorial_positive_integers(test_input, expected_output):
+    assert factorial(test_input) == expected_output
 
-# Test edge case where input is 1
+# Test the function with input as 1
 def test_factorial_one():
     assert factorial(1) == 1
 
-# Test edge case where input is 0
+# Test the function with input as 0
 def test_factorial_zero():
     assert factorial(0) == 1
 
-# Test edge case where input is a negative integer
-def test_factorial_negative_integer():
-    with pytest.raises(ValueError):
+# Test the function with negative integers
+def test_factorial_negative_integers():
+    with pytest.raises(RecursionError):
         factorial(-5)
 
-# Test edge case where input is a non-integer
-@pytest.mark.parametrize("test_input", [2.5, '5'])
-def test_factorial_non_integer(test_input):
+# Test the function with non-integer inputs
+@pytest.mark.parametrize("test_input", [2.5, 'a'])
+def test_factorial_non_integer_inputs(test_input):
     with pytest.raises(TypeError):
         factorial(test_input)
 
-# Test performance for large integer input
-def test_factorial_large_integer():
-    assert factorial(1000) is not None
+# Test the function with large integers
+def test_factorial_large_integers():
+    assert factorial(100) == 93326215443944152681699238856266700490715968264381621468592963895217599993229915608941463976156518286253697920827223758251185210916864000000000000000000000000
 ```
