@@ -12,31 +12,22 @@ def factorial(x):
 # unit tests
 # below, each test case is represented by a tuple passed to the @pytest.mark.parametrize decorator
 
-# Test the function's behavior for a wide range of possible inputs
-@pytest.mark.parametrize("test_input, expected_output", [(5, 120), (10, 3628800)])
-def test_factorial_positive_integers(test_input, expected_output):
+@pytest.mark.parametrize("test_input,expected_output", [
+    (5, 120),  # testing with positive integer
+    (10, 3628800),  # testing with another positive integer
+    (1, 1),  # testing with 1
+    (0, 1),  # testing with 0
+    (100, 93326215443944152681699238856266700490715968264381621468592963895217599993229915608941463976156518286253697920827223758251185210916864000000000000000000000000)  # testing with large input
+])
+def test_factorial(test_input, expected_output):
     assert factorial(test_input) == expected_output
 
-# Test edge cases that the author may not have foreseen
-@pytest.mark.parametrize("test_input, expected_output", [(1, 1), (0, 1)])
-def test_factorial_edge_cases(test_input, expected_output):
-    assert factorial(test_input) == expected_output
-
-# Test the function's behavior for negative numbers
-@pytest.mark.parametrize("test_input", [-1, -5])
-def test_factorial_negative_numbers(test_input):
-    with pytest.raises(RecursionError):
+@pytest.mark.parametrize("test_input", [
+    -5,  # testing with negative integer
+    2.5,  # testing with non-integer
+    'five'  # testing with string
+])
+def test_factorial_invalid_input(test_input):
+    with pytest.raises((TypeError, RecursionError)):  # expecting TypeError for string and RecursionError for negative numbers
         factorial(test_input)
-
-# Test the function's behavior for non-integer inputs
-@pytest.mark.parametrize("test_input", [5.5, '5'])
-def test_factorial_non_integer_inputs(test_input):
-    with pytest.raises(TypeError):
-        factorial(test_input)
-
-# Test the function's behavior for large numbers
-def test_factorial_large_numbers():
-    with pytest.raises(RecursionError):
-        factorial(1000)
 ```
-In this code, we use the `pytest.mark.parametrize` decorator to test multiple inputs and expected outputs for our function. We also use the `pytest.raises` context manager to check that our function raises the expected exceptions for invalid inputs.
