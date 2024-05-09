@@ -11,26 +11,39 @@ def factorial(x):
 
 # unit tests
 # below, each test case is represented by a tuple passed to the @pytest.mark.parametrize decorator
-@pytest.mark.parametrize("input,expected", [
-    (5, 120),  # testing with positive integer
-    (10, 3628800),  # testing with positive integer
-    (1, 1),  # testing with edge case of smallest positive integer
-    (0, 1),  # testing with edge case of zero
-    (50, 30414093201713378043612608166064768844377641568960512000000000000),  # testing with large number
-])
-def test_factorial(input, expected):
-    assert factorial(input) == expected
 
-@pytest.mark.parametrize("input", [
-    -5,  # testing with negative number
-    5.5,  # testing with non-integer number
-    '5',  # testing with non-integer number
-])
-def test_factorial_invalid_input(input):
-    with pytest.raises((RecursionError, TypeError)):  # expecting either RecursionError or TypeError
-        factorial(input)
+# Test the function with positive integers
+@pytest.mark.parametrize("test_input, expected_output", [(5, 120), (3, 6)])
+def test_factorial_positive_integers(test_input, expected_output):
+    assert factorial(test_input) == expected_output
 
-def test_factorial_no_input():
-    with pytest.raises(TypeError):  # expecting TypeError when no input is provided
-        factorial()
+# Test the function with 1 as input
+def test_factorial_one():
+    assert factorial(1) == 1
+
+# Test the function with 0 as input
+def test_factorial_zero():
+    assert factorial(0) == 1
+
+# Test the function with negative integers
+def test_factorial_negative_integers():
+    with pytest.raises(RecursionError):
+        factorial(-5)
+
+# Test the function with non-integer inputs
+def test_factorial_non_integer():
+    with pytest.raises(TypeError):
+        factorial(2.5)
+    with pytest.raises(TypeError):
+        factorial('a')
+
+# Test the function with large integer inputs
+def test_factorial_large_integer():
+    assert factorial(100) == 93326215443944152681699238856266700490715968264381621468592963895217599993229915608941463976156518286253697920827223758251185210916864000000000000000000000000
+
+# Test the function with None as input
+def test_factorial_none():
+    with pytest.raises(TypeError):
+        factorial(None)
 ```
+This suite of tests covers a wide range of possible inputs and edge cases for the `factorial` function. Each test asserts that the function behaves as expected for a given input, and raises an appropriate error for invalid inputs.
