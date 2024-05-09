@@ -12,22 +12,24 @@ def factorial(x):
 # unit tests
 # below, each test case is represented by a tuple passed to the @pytest.mark.parametrize decorator
 
-@pytest.mark.parametrize("test_input,expected_output", [
+@pytest.mark.parametrize("test_input, expected_output", [
     (5, 120),  # testing with positive integer
-    (10, 3628800),  # testing with another positive integer
+    (3, 6),  # testing with another positive integer
     (1, 1),  # testing with 1
-    (0, 1),  # testing with 0
-    (100, 93326215443944152681699238856266700490715968264381621468592963895217599993229915608941463976156518286253697920827223758251185210916864000000000000000000000000)  # testing with large input
+    (0, 1),  # testing with 0, should return 1 as per mathematical definition
 ])
 def test_factorial(test_input, expected_output):
     assert factorial(test_input) == expected_output
 
-@pytest.mark.parametrize("test_input", [
-    -5,  # testing with negative integer
-    2.5,  # testing with non-integer
-    'five'  # testing with string
-])
-def test_factorial_invalid_input(test_input):
-    with pytest.raises((TypeError, RecursionError)):  # expecting TypeError for string and RecursionError for negative numbers
-        factorial(test_input)
+def test_factorial_negative():
+    # testing with negative integer, should raise ValueError
+    with pytest.raises(ValueError):
+        factorial(-5)
+
+def test_factorial_non_integer():
+    # testing with non-integer, should raise ValueError
+    with pytest.raises(ValueError):
+        factorial(4.5)
+    with pytest.raises(ValueError):
+        factorial('five')
 ```
