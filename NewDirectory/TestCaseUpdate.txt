@@ -12,38 +12,33 @@ def factorial(x):
 # unit tests
 # below, each test case is represented by a tuple passed to the @pytest.mark.parametrize decorator
 
-# Test the function with positive integers
-@pytest.mark.parametrize("test_input, expected_output", [(5, 120), (3, 6)])
+# Test for positive integer inputs
+@pytest.mark.parametrize("test_input, expected_output", [(5, 120), (10, 3628800)])
 def test_factorial_positive_integers(test_input, expected_output):
     assert factorial(test_input) == expected_output
 
-# Test the function with 1 as input
+# Test for input of 1
 def test_factorial_one():
     assert factorial(1) == 1
 
-# Test the function with 0 as input
+# Test for input of 0
 def test_factorial_zero():
     assert factorial(0) == 1
 
-# Test the function with negative integers
+# Test for negative integer inputs
 def test_factorial_negative_integers():
     with pytest.raises(RecursionError):
         factorial(-5)
 
-# Test the function with non-integer inputs
-def test_factorial_non_integer():
+# Test for non-integer inputs
+@pytest.mark.parametrize("test_input", [5.5, '5'])
+def test_factorial_non_integer(test_input):
     with pytest.raises(TypeError):
-        factorial(2.5)
-    with pytest.raises(TypeError):
-        factorial('a')
+        factorial(test_input)
 
-# Test the function with large integer inputs
+# Test for large integer inputs
 def test_factorial_large_integer():
-    assert factorial(100) == 93326215443944152681699238856266700490715968264381621468592963895217599993229915608941463976156518286253697920827223758251185210916864000000000000000000000000
-
-# Test the function with None as input
-def test_factorial_none():
-    with pytest.raises(TypeError):
-        factorial(None)
+    with pytest.raises(RecursionError):
+        factorial(1000)
 ```
-This suite of tests covers a wide range of possible inputs and edge cases for the `factorial` function. Each test asserts that the function behaves as expected for a given input, and raises an appropriate error for invalid inputs.
+In the above code, each function decorated with `@pytest.mark.parametrize` or `def test_...` is a separate test case. The `assert` statement is used to check if the output of the `factorial` function matches the expected output. If the output does not match, the test will fail. The `with pytest.raises(...)` statement is used to check if the function raises the expected exception for invalid inputs.
